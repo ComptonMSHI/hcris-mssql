@@ -104,7 +104,7 @@ SELECT
                             AND na.RPT_REC_NUM = n.RPT_REC_NUM
                             AND na.LINE_NUM = n.LINE_NUM
                             AND na.CLMN_NUM = '00000'
-
+    WHERE na.CLMN_NUM = '00000' and a.CLMN_NUM != '00000'
 
 
 DROP INDEX IF EXISTS mcrFormData_a ON mcrFormData;
