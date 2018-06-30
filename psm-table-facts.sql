@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS spLoadTableFacts;
 GO
 
 /*
-EXEC spTableFacts      
+EXEC spLoadTableFacts      
         @ProductionMode = 1
 */
 

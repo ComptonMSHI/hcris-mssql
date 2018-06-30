@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS spLoadTableProviders;
 GO
 
 /*
-EXEC spTableProviders      
+EXEC spLoadTableProviders      
         @ProductionMode = 1
 */
 
