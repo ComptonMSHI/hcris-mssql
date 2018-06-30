@@ -143,6 +143,16 @@ CREATE PROC
             WHERE LEN(LINE_NUM) = 5;
 
 
+        UPDATE MCR_CROSSWALK SET
+            [CLMN_NUM_96] = SUBSTRING(CLMN_NUM_96,1,3),
+            [SUBCLMN_NUM_96] = SUBSTRING(CLMN_NUM_96,4,2)
+            WHERE LEN(CLMN_NUM_96) = 5;
+
+
+        UPDATE MCR_CROSSWALK SET
+            [CLMN_NUM] = SUBSTRING(CLMN_NUM,1,3),
+            [SUBCLMN_NUM] = SUBSTRING(CLMN_NUM,4,2)
+            WHERE LEN(CLMN_NUM) = 5;
 
 
 
