@@ -1,6 +1,11 @@
 DROP PROCEDURE IF EXISTS spLoadTableProviders;
 GO
 
+/*
+EXEC spTableProviders      
+        @ProductionMode = 1
+*/
+
 CREATE PROC
     spLoadTableProviders
     @ProductionMode INTEGER = 0

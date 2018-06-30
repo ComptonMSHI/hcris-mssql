@@ -1,6 +1,11 @@
 DROP PROCEDURE IF EXISTS spLoadTableFacts;
 GO
 
+/*
+EXEC spTableFacts      
+        @ProductionMode = 1
+*/
+
 CREATE PROC
     spLoadTableFacts
     @ProductionMode INTEGER = 0
