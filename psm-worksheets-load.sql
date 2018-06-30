@@ -132,9 +132,6 @@ CREATE PROC
 
             EXEC SP_EXECUTESQL @SQLString;            
 
-        -- TODO: This needs to be fixed on import!!!  Raw line with subline is not importing with SSIS.
-
-        UPDATE MCR_WORKSHEETS SET LINE_NUM_RAW = CONCAT(CONVERT(int, LINE_NUM),'.',SUBLINE_NUM) WHERE SUBLINE_NUM Is Not Null AND LINE_NUM_RAW Is Null;
 
         -- This is run after the worksheets table is built
 
