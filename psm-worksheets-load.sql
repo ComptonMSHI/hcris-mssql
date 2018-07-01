@@ -70,7 +70,7 @@ CREATE PROC
             [SUBSECTION_NAME] [varchar](500) NULL,	-- * "General Inpatient Routine Care Services"	
 
             /* LINE */
-            [LINE_NUM_RAW] [varchar](8) NULL,	-- * "1"
+            --[LINE_NUM_RAW] [varchar](8) NULL,	-- * "1"
             [LINE_DESC] [varchar](500) NULL,		-- * " Cash on hand and in banks" NEEDS TRIM
             [LINE_NUM] [varchar](3) NULL,				--
             [NO_LINE_DESC_FLG] [int] NULL,			-- "1" or NULL
@@ -79,7 +79,7 @@ CREATE PROC
             [SUBLINE_NUM] [varchar](2) NULL,		-- ?
 
             /* COLUMN */
-            [CLMN_NUM_RAW] [varchar](8) NULL,		-- ?
+            --[CLMN_NUM_RAW] [varchar](8) NULL,		-- ?
             [CLMN_DESC] [varchar](500) NULL,		-- ! "Plant Fund" [NOT_USED]
             [CLMN_NUM] [varchar](3) NULL,				-- ! "1" [NOT USED]
 

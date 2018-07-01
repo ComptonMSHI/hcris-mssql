@@ -67,7 +67,7 @@ CREATE PROC
 
 
                 /* LINE */
-                [LINE_NUM_RAW] [varchar](8) NULL,	-- * "1"
+                --[LINE_NUM_RAW] [varchar](8) NULL,	-- * "1"
                 [LINE_DESC] [varchar](500) NULL,		-- * " Cash on hand and in banks" NEEDS TRIM
                 [LINE_NUM] [varchar](6) NULL,				--
                 [NO_LINE_DESC_FLG] [int] NULL,			-- "1" or NULL
@@ -78,7 +78,7 @@ CREATE PROC
             /* EVERYTHING GOES OVER (X Axis) [COLUMN FOCUSED] PIVOTED */
 
                 /* COLUMN */
-                [CLMN_NUM_RAW] [varchar](8) NULL,		-- ?
+                --[CLMN_NUM_RAW] [varchar](8) NULL,		-- ?
                 [CLMN_DESC] [varchar](500) NULL,		-- ! "Plant Fund" [NOT_USED]
                 [CLMN_NUM] [varchar](6) NULL,				-- ! "1" [NOT USED]
 
