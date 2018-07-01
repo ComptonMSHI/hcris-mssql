@@ -238,6 +238,9 @@ CREATE PROC
                         DROP INDEX IF EXISTS MCR_NEW_RPT_a ON MCR_NEW_RPT;
                         CREATE INDEX MCR_NEW_RPT_a ON MCR_NEW_RPT (PRVDR_NUM ASC, FY_BGN_DT ASC, FY_END_DT ASC, RPT_REC_NUM ASC);
 
+                        DROP INDEX IF EXISTS MCR_NEW_RPT_b ON MCR_NEW_RPT;
+                        CREATE INDEX MCR_NEW_RPT_b ON MCR_NEW_RPT (IMPORT_DT ASC, RPT_REC_NUM ASC);
+
                         SELECT 'Total Records' AS [Result], COUNT(*) As [Count] FROM [MCR_NEW_RPT];
                     END
                 ELSE
