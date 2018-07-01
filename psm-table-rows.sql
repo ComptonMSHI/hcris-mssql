@@ -11,9 +11,53 @@ CREATE PROC
     @ProductionMode INTEGER = 0
     AS BEGIN
 
+-- Descriptions of NMRC fields
+
+DROP TABLE IF EXISTS mcrFormData_Alpha;
+
+SELECT
+	IMPORT_DT
+	, FORM
+	, RPT_REC_NUM
+	, WKSHT_CD
+    , SUBSTRING(LINE_NUM,1,3) as LINE_NUM
+    , SUBSTRING(LINE_NUM,4,5) as SUBLINE_NUM     
+    , SUBSTRING(CLMN_NUM,1,3) as CLMN_NUM 
+    , SUBSTRING(CLMN_NUM,4,5) as SUBCLMN_NUM
+    , ALPHNMRC_ITM_TXT as ALPHA
+
+    INTO mcrFormData_Alpha
+    FROM MCR_NEW_ALPHA
+    WHERE CLMN_NUM != '00000'
+
+    DROP INDEX IF EXISTS mcrFormData_Alpha_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Alpha;
+    CREATE INDEX mcrFormData_Alpha_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Alpha (WKSHT_CD ASC, FORM ASC, IMPORT_DT ASC, RPT_REC_NUM ASC, LINE_NUM ASC, CLMN_NUM ASC);    
+
+-- Other AlphaNumeric information
+
+DROP TABLE IF EXISTS mcrFormData_Alpha_Desc;
+
+SELECT
+	IMPORT_DT
+	, FORM
+	, RPT_REC_NUM
+	, WKSHT_CD
+    , SUBSTRING(LINE_NUM,1,3) as LINE_NUM
+    , SUBSTRING(LINE_NUM,4,5) as SUBLINE_NUM     
+    , SUBSTRING(CLMN_NUM,1,3) as CLMN_NUM 
+    , SUBSTRING(CLMN_NUM,4,5) as SUBCLMN_NUM
+    , ALPHNMRC_ITM_TXT as ALPHA
+
+    INTO mcrFormData_Alpha_Desc
+    FROM MCR_NEW_ALPHA
+    WHERE CLMN_NUM = '00000'
+
+    DROP INDEX IF EXISTS mcrFormData_Alpha_Desc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Alpha;
+    CREATE INDEX mcrFormData_Alpha_Desc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Alpha (WKSHT_CD ASC, FORM ASC, IMPORT_DT ASC, RPT_REC_NUM ASC, LINE_NUM ASC, CLMN_NUM ASC);       
+
+-- Combined form data
 
 DROP TABLE IF EXISTS mcrFormData;
-
 
 SELECT
 	r.IMPORT_DT
@@ -61,9 +105,9 @@ SELECT
 	, cw.CLMN_NUM_96 as [CLMN_NUM_96]
 	, cw.SUBCLMN_NUM_96 as [SUBCLMN_NUM_96]
 
-	, a.ALPHNMRC_ITM_TXT as ALPHA
+	, a.ALPHA as ALPHA
 	, n.ITM_VAL_NUM as NMRC
-	, na.ALPHNMRC_ITM_TXT as NMRC_DESC
+	, na.ALPHA as NMRC_DESC
 
     INTO mcrFormData
     FROM MCR_AVAILABLE yes
@@ -80,14 +124,13 @@ SELECT
                     AND w.LINE_NUM = cw.LINE_NUM_96 
                     AND w.CLMN_NUM = cw.CLMN_NUM_96 
                     
-                LEFT JOIN MCR_NEW_ALPHA a ON
-                        a.CLMN_NUM != '00000' AND
+                LEFT JOIN mcrFormData_Alpha a ON
                         a.WKSHT_CD = w.WKSHT_CD
                         AND a.FORM = w.FORM_NUM
                         AND a.IMPORT_DT = r.IMPORT_DT
                         AND a.RPT_REC_NUM = r.RPT_REC_NUM
-                        AND w.LINE_NUM = SUBSTRING(a.LINE_NUM,1,3)
-                        AND w.CLMN_NUM = SUBSTRING(a.CLMN_NUM,1,3)                    
+                        AND w.LINE_NUM = a.LINE_NUM
+                        AND w.CLMN_NUM = a.CLMN_NUM                   
                                    
                 LEFT JOIN MCR_NEW_NMRC n ON	
                     n.WKSHT_CD = w.WKSHT_CD
@@ -97,14 +140,12 @@ SELECT
                     AND w.LINE_NUM = SUBSTRING(n.LINE_NUM,1,3)
                     AND w.CLMN_NUM = SUBSTRING(n.CLMN_NUM,1,3) 
 
-                        LEFT JOIN MCR_NEW_ALPHA na ON
+                        LEFT JOIN mcrFormData_Alpha_Desc na ON
                             na.WKSHT_CD = n.WKSHT_CD
                             AND na.FORM = n.FORM
                             AND na.IMPORT_DT = n.IMPORT_DT
                             AND na.RPT_REC_NUM = n.RPT_REC_NUM
                             AND na.LINE_NUM = n.LINE_NUM
-                            AND na.CLMN_NUM = '00000'
-
 
 DROP INDEX IF EXISTS mcrFormData_a ON mcrFormData;
 CREATE INDEX mcrFormData_a ON mcrFormData (FORM, WKSHT, WKSHT_CD);
