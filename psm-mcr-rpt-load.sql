@@ -22,6 +22,7 @@
 -- 0 = Test Mode 		- All actions simulated.  No permanent changes.
 -- 1 = Production Mode 	- All actions permanent.  Will drop and create tables.
 
+
 DROP PROCEDURE IF EXISTS spLoadRptData;
 GO
 
@@ -33,6 +34,8 @@ CREATE PROC
         @YearTo INTEGER = 2017, 
         @ProductionMode INTEGER = 0
     AS BEGIN
+
+        print '*** RUNNING psm-mcr-rpt-load.sql'
 
         DECLARE @RptFields VARCHAR(MAX)
         DECLARE @RptFields10 VARCHAR(MAX)
@@ -142,7 +145,7 @@ CREATE PROC
                                     ''' + @CsvFile + ''' AS IMPORT_SRC,
                                     ''2552-96'' AS FORM,
                                     ' + @RptFields + N' FROM #TempRPT;'
-                        --PRINT @SQLStmt
+                        PRINT N'Loading (96): '+ @CsvFile
                         EXEC sp_executesql @SQLStmt	
                     END
 
@@ -164,7 +167,7 @@ CREATE PROC
                                     ''' + @CsvFile + ''' AS IMPORT_SRC,
                                     ''2552-10'' AS FORM,
                                     ' + @RptFields10 + N' FROM #TempRPT;'
-                        --PRINT @SQLStmt
+                        PRINT N'Loading (10): '+ @CsvFile
                         EXEC sp_executesql @SQLStmt	                          
                     END
 

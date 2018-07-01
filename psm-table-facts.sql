@@ -1,3 +1,5 @@
+
+
 DROP PROCEDURE IF EXISTS spLoadTableFacts;
 GO
 
@@ -10,6 +12,8 @@ CREATE PROC
     spLoadTableFacts
     @ProductionMode INTEGER = 0
     AS BEGIN
+
+    print '*** RUNNING psm-table-facts.sql'
 
 DROP TABLE IF EXISTS mcrMeasures;
 

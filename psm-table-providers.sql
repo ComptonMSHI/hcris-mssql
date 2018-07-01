@@ -1,3 +1,6 @@
+
+
+
 DROP PROCEDURE IF EXISTS spLoadTableProviders;
 GO
 
@@ -11,6 +14,7 @@ CREATE PROC
     @ProductionMode INTEGER = 0
     AS BEGIN
 
+    print '*** RUNNING psm-table-providers.sql'
 
 DROP TABLE IF EXISTS mcrProviders;
 

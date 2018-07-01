@@ -16,6 +16,7 @@ CREATE PROC
         @ProductionMode INTEGER = 0
     AS BEGIN
 
+    print '*** RUNNING psm-worksheets-load.sql'
 
         /************************************************************
             MODE

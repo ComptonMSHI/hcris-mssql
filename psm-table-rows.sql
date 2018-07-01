@@ -11,6 +11,8 @@ CREATE PROC
     @ProductionMode INTEGER = 0
     AS BEGIN
 
+    print '*** RUNNING psm-table-rows.sql'
+
 -- Descriptions of NMRC fields
 
 DROP TABLE IF EXISTS mcrFormData_Alpha;

@@ -18,6 +18,8 @@ CREATE PROC
         @ProductionMode INTEGER = 0
     AS BEGIN
 
+    print '*** RUNNING psm-worksheets-availability.sql'
+
 
         IF @ProductionMode = 1
             BEGIN

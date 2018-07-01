@@ -22,6 +22,7 @@
 -- 0 = Test Mode 		- All actions simulated.  No permanent changes.
 -- 1 = Production Mode 	- All actions permanent.  Will drop and create tables.
 
+
 DROP PROCEDURE IF EXISTS spLoadAlphaData;
 GO
 
@@ -35,6 +36,9 @@ CREATE PROC
         @YearTo INTEGER = 2017, 
         @ProductionMode INTEGER = 0
     AS BEGIN
+
+print '*** RUNNING psm-mcr-alpha-load.sql'
+
 
 DECLARE @AlphaFields VARCHAR(MAX)
 DECLARE @AlphaFields10 VARCHAR(MAX)
@@ -117,7 +121,7 @@ WHILE @CurrYear <= @YearTo
                             ''' + @CsvFile + ''' AS IMPORT_SRC,
                             ''2552-96'' AS FORM,
                             ' + @AlphaFields + N' FROM #TempALPHA;'
-                --PRINT @SQLStmt
+                PRINT N'Loading (96): '+ @CsvFile
                 EXEC sp_executesql @SQLStmt	
             END
 
@@ -139,11 +143,9 @@ WHILE @CurrYear <= @YearTo
                             ''' + @CsvFile + ''' AS IMPORT_SRC,
                             ''2552-10'' AS FORM,
                             ' + @AlphaFields10 + N' FROM #TempALPHA;'
-                --PRINT @SQLStmt
+                PRINT N'Loading (10): '+ @CsvFile
                 EXEC sp_executesql @SQLStmt	      
-
-                DROP INDEX IF EXISTS ALPHA_FORM_WKSHTCD_LINENUM_CLMNNUM ON MCR_NEW_ALPHA;
-                CREATE INDEX ALPHA_FORM_WKSHTCD_LINENUM_CLMNNUM ON MCR_NEW_ALPHA (IMPORT_DT ASC, FORM ASC, WKSHT_CD ASC, RPT_REC_NUM ASC, LINE_NUM ASC, CLMN_NUM ASC);                    
+                 
             END
 
         SET @CurrYear = @CurrYear + 1
@@ -196,6 +198,9 @@ IF @Validated = 1
                         SELECT IMPORT_DT, IMPORT_SRC, FORM, ' + @AlphaFields + N' FROM #TempALPHAMaster;'
                 --PRINT @SQLStmt
                 EXEC sp_executesql @SQLStmt	
+
+                DROP INDEX IF EXISTS ALPHA_FORM_WKSHTCD_LINENUM_CLMNNUM ON MCR_NEW_ALPHA;
+                CREATE INDEX ALPHA_FORM_WKSHTCD_LINENUM_CLMNNUM ON MCR_NEW_ALPHA (IMPORT_DT ASC, FORM ASC, WKSHT_CD ASC, RPT_REC_NUM ASC, LINE_NUM ASC, CLMN_NUM ASC);   
 			END
 		ELSE
 			BEGIN

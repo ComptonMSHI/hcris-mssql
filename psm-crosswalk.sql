@@ -14,6 +14,8 @@ CREATE PROC
         @ProductionMode INTEGER = 0
     AS BEGIN
 
+    print '*** RUNNING psm-crosswalk.sql'
+
 
         /************************************************************
             MODE

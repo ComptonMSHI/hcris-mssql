@@ -22,6 +22,7 @@
 -- 0 = Test Mode 		- All actions simulated.  No permanent changes.
 -- 1 = Production Mode 	- All actions permanent.  Will drop and create tables.
 
+
 DROP PROCEDURE IF EXISTS spLoadNmrcData;
 GO
 
@@ -34,6 +35,8 @@ CREATE PROC
         @YearTo INTEGER = 2017, 
         @ProductionMode INTEGER = 0
     AS BEGIN
+    
+    print '*** RUNNING psm-mcr-nmrc-load.sql'
 
         DECLARE @NmrcFields VARCHAR(MAX)
         DECLARE @NmrcFields10 VARCHAR(MAX)
@@ -132,7 +135,7 @@ WHILE @CurrYear <= @YearTo
                             ''' + @CsvFile + ''' AS IMPORT_SRC,
                             ''2552-96'' AS FORM,
                             ' + @NmrcFields + N' FROM #TempNMRC;'
-                --PRINT @SQLStmt
+                PRINT N'Loading (96): '+ @CsvFile
                 EXEC sp_executesql @SQLStmt	
             END
 
@@ -155,18 +158,8 @@ WHILE @CurrYear <= @YearTo
                             ''' + @CsvFile + ''' AS IMPORT_SRC,
                             ''2552-10'' AS FORM,
                             ' + @NmrcFields10 + N' FROM #TempNMRC;'
-                --PRINT @SQLStmt
-                EXEC sp_executesql @SQLStmt	    
-
-
-                DROP INDEX IF EXISTS NMRC_RPTRECNUM_LINENUM_CLMNNUM ON MCR_NEW_NMRC;
-                CREATE INDEX NMRC_RPTRECNUM_LINENUM_CLMNNUM ON MCR_NEW_NMRC (RPT_REC_NUM,LINE_NUM,CLMN_NUM);
-
-                DROP INDEX IF EXISTS NMRC_FORM_WKSHTCD_LINENUM_CLMNNUM ON MCR_NEW_NMRC;
-                CREATE INDEX NMRC_FORM_WKSHTCD_LINENUM_CLMNNUM ON MCR_NEW_NMRC (IMPORT_DT ASC, FORM ASC, RPT_REC_NUM ASC, WKSHT_CD ASC, LINE_NUM ASC, CLMN_NUM ASC); 
-
-                DROP INDEX IF EXISTS NMRC_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM ON MCR_NEW_NMRC;
-                CREATE INDEX NMRC_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM ON MCR_NEW_NMRC (WKSHT_CD ASC, FORM ASC, IMPORT_DT ASC, RPT_REC_NUM ASC);                                      
+                PRINT N'Loading (10): '+ @CsvFile
+                EXEC sp_executesql @SQLStmt	                                        
             END
 
         SET @CurrYear = @CurrYear + 1
@@ -246,7 +239,14 @@ ELSE
 -- CORRECT FOR OLD FORMAT COLUMN NUMBERS (XXYY TO XXXYY)
 UPDATE MCR_NEW_NMRC SET CLMN_NUM = CONCAT('0',CLMN_NUM) WHERE LEN(CLMN_NUM) = 4;
 
+DROP INDEX IF EXISTS NMRC_RPTRECNUM_LINENUM_CLMNNUM ON MCR_NEW_NMRC;
+CREATE INDEX NMRC_RPTRECNUM_LINENUM_CLMNNUM ON MCR_NEW_NMRC (RPT_REC_NUM,LINE_NUM,CLMN_NUM);
 
+DROP INDEX IF EXISTS NMRC_FORM_WKSHTCD_LINENUM_CLMNNUM ON MCR_NEW_NMRC;
+CREATE INDEX NMRC_FORM_WKSHTCD_LINENUM_CLMNNUM ON MCR_NEW_NMRC (IMPORT_DT ASC, FORM ASC, RPT_REC_NUM ASC, WKSHT_CD ASC, LINE_NUM ASC, CLMN_NUM ASC); 
+
+DROP INDEX IF EXISTS NMRC_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM ON MCR_NEW_NMRC;
+CREATE INDEX NMRC_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM ON MCR_NEW_NMRC (WKSHT_CD ASC, FORM ASC, IMPORT_DT ASC, RPT_REC_NUM ASC);  
 
 
 
