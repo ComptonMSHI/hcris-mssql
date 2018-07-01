@@ -108,12 +108,12 @@ CREATE PROC
                             w.PART_NAME,
                             w.SECTION_NAME,
                             w.SUBSECT_NAME as SUBSECTION_NAME,
-                            w.LINE_NUM_RAW,
+                            -- w.LINE_NUM_RAW,
                             w.LINE_DESC,
                             w.LINE_NUM,
                             w.NO_LINE_DESC_FLG,
                             w.SUBLINE_NUM,
-                            w.CLMN_NUM_RAW,
+                            -- w.CLMN_NUM_RAW,
                             result.COL_DESC as CLMN_DESC,
                             result.COL_NUM as CLMN_NUM,
                             w.SUBCLMN_NUM
@@ -167,7 +167,7 @@ CREATE PROC
         CREATE INDEX i2c ON MCR_WORKSHEETS (WKSHT);
 
         DROP INDEX IF EXISTS i2d ON MCR_WORKSHEETS;
-        CREATE INDEX i2d ON MCR_WORKSHEETS (FORM_NUM ASC, WKSHT_CD ASC, LINE_NUM_RAW ASC);
+        CREATE INDEX i2d ON MCR_WORKSHEETS (FORM_NUM ASC, WKSHT_CD ASC, LINE_NUM ASC);
 
         DROP INDEX IF EXISTS i2e ON MCR_WORKSHEETS;
         CREATE INDEX i2e ON MCR_WORKSHEETS (WKSHT_CD ASC, FORM_NUM ASC, LINE_NUM ASC, CLMN_NUM ASC);
