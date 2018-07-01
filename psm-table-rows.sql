@@ -80,7 +80,7 @@ SELECT
 
 DROP TABLE IF EXISTS mcrFormData;
 
-SELECT TOP 100
+SELECT
 	r.IMPORT_DT
 	, r.FORM
 	
@@ -132,7 +132,7 @@ SELECT TOP 100
 
    INTO mcrFormData
     FROM MCR_AVAILABLE yes
-        LEFT JOIN MCR_NEW_RPT r ON
+        INNER JOIN MCR_NEW_RPT r ON
             r.FORM = yes.FORM
 
            INNER JOIN MCR_WORKSHEETS w ON
