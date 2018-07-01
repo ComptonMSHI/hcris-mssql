@@ -53,13 +53,34 @@ SELECT
     WHERE CLMN_NUM = '00000'
 
     DROP INDEX IF EXISTS mcrFormData_Alpha_Desc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Alpha;
-    CREATE INDEX mcrFormData_Alpha_Desc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Alpha (WKSHT_CD ASC, FORM ASC, IMPORT_DT ASC, RPT_REC_NUM ASC, LINE_NUM ASC, CLMN_NUM ASC);       
+    CREATE INDEX mcrFormData_Alpha_Desc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Alpha (WKSHT_CD ASC, FORM ASC, IMPORT_DT ASC, RPT_REC_NUM ASC, LINE_NUM ASC, CLMN_NUM ASC);
+
+-- Numeric Information
+
+DROP TABLE IF EXISTS mcrFormData_Nmrc;
+
+SELECT
+	IMPORT_DT
+	, FORM
+	, RPT_REC_NUM
+	, WKSHT_CD
+    , SUBSTRING(LINE_NUM,1,3) as LINE_NUM
+    , SUBSTRING(LINE_NUM,4,5) as SUBLINE_NUM     
+    , SUBSTRING(CLMN_NUM,1,3) as CLMN_NUM 
+    , SUBSTRING(CLMN_NUM,4,5) as SUBCLMN_NUM
+    , ITM_VAL_NUM as NMRC
+
+    INTO mcrFormData_Nmrc
+    FROM MCR_NEW_NMRC
+
+    DROP INDEX IF EXISTS mcrFormData_Nmrc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Nmrc;
+    CREATE INDEX mcrFormData_Nmrc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Nmrc (WKSHT_CD ASC, FORM ASC, IMPORT_DT ASC, RPT_REC_NUM ASC, LINE_NUM ASC, CLMN_NUM ASC);          
 
 -- Combined form data
 
 DROP TABLE IF EXISTS mcrFormData;
 
-SELECT
+SELECT TOP 100
 	r.IMPORT_DT
 	, r.FORM
 	
@@ -106,15 +127,15 @@ SELECT
 	, cw.SUBCLMN_NUM_96 as [SUBCLMN_NUM_96]
 
 	, a.ALPHA as ALPHA
-	, n.ITM_VAL_NUM as NMRC
+	, n.NMRC as NMRC
 	, na.ALPHA as NMRC_DESC
 
-    INTO mcrFormData
+   INTO mcrFormData
     FROM MCR_AVAILABLE yes
         LEFT JOIN MCR_NEW_RPT r ON
             r.FORM = yes.FORM
 
-            LEFT JOIN MCR_WORKSHEETS w ON
+           INNER JOIN MCR_WORKSHEETS w ON
                 w.FORM_NUM = r.FORM	
                 AND w.WKSHT_CD = yes.WKSHT_CD
 
@@ -130,15 +151,19 @@ SELECT
                         AND a.IMPORT_DT = r.IMPORT_DT
                         AND a.RPT_REC_NUM = r.RPT_REC_NUM
                         AND w.LINE_NUM = a.LINE_NUM
-                        AND w.CLMN_NUM = a.CLMN_NUM                   
+                        AND w.CLMN_NUM = a.CLMN_NUM
+                        AND w.SUBLINE_NUM = a.SUBLINE_NUM
+                        AND w.SUBCLMN_NUM = a.SUBCLMN_NUM                    
                                    
-                LEFT JOIN MCR_NEW_NMRC n ON	
+                LEFT JOIN mcrFormData_Nmrc n ON	
                     n.WKSHT_CD = w.WKSHT_CD
                     AND n.FORM = w.FORM_NUM	
                     AND n.IMPORT_DT = r.IMPORT_DT
                     AND n.RPT_REC_NUM = r.RPT_REC_NUM
-                    AND w.LINE_NUM = SUBSTRING(n.LINE_NUM,1,3)
-                    AND w.CLMN_NUM = SUBSTRING(n.CLMN_NUM,1,3) 
+                    AND w.LINE_NUM = n.LINE_NUM
+                    AND w.CLMN_NUM = n.CLMN_NUM
+                    AND w.SUBLINE_NUM = n.SUBLINE_NUM
+                    AND w.SUBCLMN_NUM = n.SUBCLMN_NUM  
 
                         LEFT JOIN mcrFormData_Alpha_Desc na ON
                             na.WKSHT_CD = n.WKSHT_CD
