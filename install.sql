@@ -1968,6 +1968,9 @@ EXEC spSetWorksheetAvailabilityOn @Form = '2552-10', @Worksheet = 'S300001', @Pr
 print '*** INSTALL: Build Row Table'
 EXEC spLoadTableRows @ProductionMode = @INSTALL_PRODUCTION;
 
+print '*** INSTALL: Build Row Table'
+EXEC spLoadTableForm @ProductionMode = @INSTALL_PRODUCTION;
+
 print '*** INSTALL: Build Provider Table'
 EXEC spLoadTableProviders @ProductionMode = @INSTALL_PRODUCTION;
 
