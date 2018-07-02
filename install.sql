@@ -6,16 +6,18 @@ DECLARE @INSTALL_FROM_PATH VARCHAR(255) = N'/data/mcr/Output'
 DECLARE @INSTALL_FROM_FOLDER VARCHAR(255) = N'2018-05-06'
 
 -- If running in SMSS, this will load all stored procedures.
--- :r "psm-crosswalk.sql"
--- :r "psm-mcr-alpha-load.sql"
--- :r "psm-mcr-nmrc-load.sql"
--- :r "psm-mcr-rpt-load.sql"
--- :r "psm-table-facts.sql"
--- :r "psm-table-providers.sql"
--- :r "psm-table-rows.sql"
--- :r "psm-worksheets-availability.sql"
--- :r "psm-worksheets-initialize.sql"
--- :r "psm-worksheets-load.sql"
+-- In the SSMS Menu: Query > SQLCMD Mode
+-- :setvar path "C:\Users\chris\Documents\GitHub\hcris-mssql"
+-- :r $(path)\psm-crosswalk.sql
+-- :r $(path)\psm-mcr-alpha-load.sql
+-- :r $(path)\psm-mcr-nmrc-load.sql
+-- :r $(path)\psm-mcr-rpt-load.sql
+-- :r $(path)\psm-table-facts.sql
+-- :r $(path)\psm-table-providers.sql
+-- :r $(path)\psm-table-rows.sql
+-- :r $(path)\psm-worksheets-availability.sql
+-- :r $(path)\psm-worksheets-initialize.sql
+-- :r $(path)\psm-worksheets-load.sql
 
 print '*** INSTALL: Set Recovery Simple'
 ALTER DATABASE UABMSHIMCR SET RECOVERY SIMPLE;  
