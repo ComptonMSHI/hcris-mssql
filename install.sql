@@ -2,7 +2,7 @@ DECLARE @INSTALL_PRODUCTION INT = 1
 
 DECLARE @INSTALL_START_YEAR INT = 1995
 DECLARE @INSTALL_END_YEAR INT = 2017
-DECLARE @INSTALL_FROM_PATH VARCHAR(255) = N'C:\Users\chris@dccompton.com\Code\Output'
+DECLARE @INSTALL_FROM_PATH VARCHAR(255) = N'C:\Users\chris\Code\Output'
 DECLARE @INSTALL_FROM_FOLDER VARCHAR(255) = N'2018-06-24'
 
 -- If running in SMSS, this will load all stored procedures.
@@ -18,8 +18,6 @@ DECLARE @INSTALL_FROM_FOLDER VARCHAR(255) = N'2018-06-24'
 -- :r $(path)\psm-worksheets-availability.sql
 -- :r $(path)\psm-worksheets-initialize.sql
 -- :r $(path)\psm-worksheets-load.sql
-
-print '*** INSTALL: Set Recovery Simple'
 
 print '*** INSTALL: Load RPT Files'
 EXEC spLoadRptData 
