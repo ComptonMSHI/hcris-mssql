@@ -38,7 +38,7 @@ IF @ProductionMode = 1
 
         DROP TABLE IF EXISTS mcrForm;
 
-        SELECT
+        SELECT DISTINCT
             yes.FORM
             , w.WKSHT
             , w.WKSHT_CD
@@ -96,7 +96,9 @@ IF @ProductionMode = 1
 
         DROP TABLE IF EXISTS mcrFormData;
 
-        print '*** LOADING ALPHA DATA'
+        print '*** LOADING ALPHA DATA';
+
+        WITH CombinedData AS (
         SELECT
             r.IMPORT_DT
             , r.FORM
@@ -125,9 +127,11 @@ IF @ProductionMode = 1
             , f.CLMN_NUM_96
             , f.SUBCLMN_NUM_96
 
+            , NULL as NMRC
+            , NULL as NMRC_DESC
             , a.ALPHA as ALPHA
 
-        INTO mcrFormData
+        
         FROM MCR_NEW_RPT r
 
             LEFT JOIN mcrFormData_Alpha a ON
@@ -141,10 +145,10 @@ IF @ProductionMode = 1
                 AND f.LINE_NUM = a.LINE_NUM
                 AND f.CLMN_NUM = a.CLMN_NUM
                 AND f.SUBLINE_NUM = a.SUBLINE_NUM
-                AND f.SUBCLMN_NUM = a.SUBCLMN_NUM;        
+                AND f.SUBCLMN_NUM = a.SUBCLMN_NUM        
 
+        UNION
 
-        print '*** LOADING NMRC DATA'
         SELECT
             r.IMPORT_DT
             , r.FORM
@@ -175,8 +179,8 @@ IF @ProductionMode = 1
 
             , n.NMRC as NMRC
             , na.ALPHA as NMRC_DESC
+            , NULL as ALPHA
 
-            INTO mcrFormData
             FROM MCR_NEW_RPT r 
             
                 LEFT JOIN mcrFormData_Nmrc n ON	
@@ -195,8 +199,11 @@ IF @ProductionMode = 1
                     AND f.LINE_NUM = n.LINE_NUM
                     AND f.CLMN_NUM = n.CLMN_NUM
                     AND f.SUBLINE_NUM = n.SUBLINE_NUM
-                    AND f.SUBCLMN_NUM = n.SUBCLMN_NUM;        
-                    
+                    AND f.SUBCLMN_NUM = n.SUBCLMN_NUM       
+            ) 
+            SELECT *
+            INTO mcrFormData
+            FROM CombinedData;       
 
 
 
