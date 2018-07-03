@@ -86,7 +86,7 @@ IF @ProductionMode = 1
                             AND w.WKSHT_CD = cw.WKSHT_CD_96
                             AND w.LINE_NUM = cw.LINE_NUM_96 
                             AND w.CLMN_NUM = cw.CLMN_NUM_96 
-
+            WHERE w.CLMN_NUM Is Not Null
 
             DROP INDEX IF EXISTS mcrForm_a ON mcrForm;
             CREATE INDEX mcrForm_a ON mcrForm (FORM ASC, WKSHT_CD ASC, LINE_NUM ASC, SUBLINE_NUM ASC, CLMN_NUM ASC, SUBCLMN_NUM ASC);
