@@ -1,3 +1,15 @@
+/*
+# Author:   Chris Compton
+# Date:     June 2018
+#################################
+# Reason:   This set of scripts produce the foundation RPT, ALPHA and NMRC tables that feed all tables in the project.
+# For:      UAB MSHI Capstone Project
+# Title:    A Sustainable Business Intelligence Approach 
+#           to the U.S. Centers for Medicare and Medicaid Services Cost Report Data
+#################################
+# Install:  See README.md for instructions.
+*/
+
 DECLARE @INSTALL_PRODUCTION INT = 1
 
 DECLARE @INSTALL_START_YEAR INT = 1995

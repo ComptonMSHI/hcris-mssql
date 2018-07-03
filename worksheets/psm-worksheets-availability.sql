@@ -1,15 +1,28 @@
-DROP PROCEDURE IF EXISTS spSetWorksheetAvailabilityOn;
-GO
-
 /*
-EXEC spSetWorksheetAvailabilityOn
-        @Form = '2552-10'
-        , @Worksheet = 'A000000'        
-        , @ProductionMode = 0
-*/
+# Author:   Chris Compton
+# Date:     June 2018
+#################################
+# Reason:   These procesdures handle entries for the availability of worksheets within the project.
+# For:      UAB MSHI Capstone Project
+# Title:    A Sustainable Business Intelligence Approach 
+#           to the U.S. Centers for Medicare and Medicaid Services Cost Report Data
+#################################
+# Install:  See README.md for instructions.
+# Usage:
+    EXEC spSetWorksheetAvailabilityOn
+            @Form = '2552-10'
+            , @Worksheet = 'A000000'        
+            , @ProductionMode = 0
 
+    -- This resets the entire availability table.
+    EXEC spSetWorksheetAvailabilityReset      
+            , @ProductionMode = 0
+*/
 -- 0 = Test Mode 		- All actions simulated.  No permanent changes.
 -- 1 = Production Mode 	- All actions permanent.  Will drop and create tables.
+
+DROP PROCEDURE IF EXISTS spSetWorksheetAvailabilityOn;
+GO
 
 CREATE PROC
     spSetWorksheetAvailabilityOn
@@ -39,14 +52,6 @@ GO
 
 DROP PROCEDURE IF EXISTS spSetWorksheetAvailabilityReset;
 GO
-
-/*
-EXEC spSetWorksheetAvailabilityReset      
-        , @ProductionMode = 0
-*/
-
--- 0 = Test Mode 		- All actions simulated.  No permanent changes.
--- 1 = Production Mode 	- All actions permanent.  Will drop and create tables.
 
 CREATE PROC
     spSetWorksheetAvailabilityReset      
