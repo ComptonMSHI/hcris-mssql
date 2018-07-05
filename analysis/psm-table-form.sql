@@ -179,6 +179,7 @@ IF @ProductionMode = 1
 
             , n.NMRC as NMRC
             , na.ALPHA as NMRC_DESC
+            , na.COSTCODE as COSTCODE
             , NULL as ALPHA
 
             FROM MCR_NEW_RPT r 
