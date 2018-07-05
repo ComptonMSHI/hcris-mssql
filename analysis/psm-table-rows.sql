@@ -71,13 +71,21 @@ IF @ProductionMode = 1
             , SUBSTRING(CLMN_NUM,1,3) as CLMN_NUM 
             , SUBSTRING(CLMN_NUM,4,5) as SUBCLMN_NUM
             , ALPHNMRC_ITM_TXT as ALPHA
+            , STR(Null) as COSTCODE
 
             INTO mcrFormData_Alpha_Desc
             FROM MCR_NEW_ALPHA
-            WHERE CLMN_NUM = '00000'
+            WHERE CLMN_NUM = '00000';
+
+            UPDATE mcrFormData_Alpha_Desc SET COSTCODE = CONVERT(VARCHAR,SUBSTRING(ALPHA,1,5))
+                WHERE ALPHA LIKE '[0-9][0-9][0-9][0-9][0-9][A-Z]%';
+            
+            UPDATE mcrFormData_Alpha_Desc SET ALPHA = SUBSTRING(ALPHA,6,LEN(ALPHA)-5) 
+                WHERE ALPHA LIKE '[0-9][0-9][0-9][0-9][0-9][A-Z]%';
 
             DROP INDEX IF EXISTS mcrFormData_Alpha_Desc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Alpha_Desc;
             CREATE INDEX mcrFormData_Alpha_Desc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Alpha_Desc (FORM ASC, WKSHT_CD ASC, LINE_NUM ASC, SUBLINE_NUM ASC, CLMN_NUM ASC, SUBCLMN_NUM ASC);
+
 
         -- Numeric Information
 
