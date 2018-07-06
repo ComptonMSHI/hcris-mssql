@@ -35,24 +35,44 @@ CREATE PROC
         print '*** RUNNING CheckWorksheet'
 
         SET @SQLStmt = 'SELECT TOP '+ CONVERT(VARCHAR, @Records) +' *
+            FROM mcrFormData
+            WHERE WKSHT_CD='''+ @Worksheet +'''
+            AND RPT_REC_NUM=' + CONVERT(VARCHAR, @RecordNum) + '
+            ORDER BY LINE_NUM, SUBLINE_NUM, CLMN_NUM, SUBCLMN_NUM;'
+
+            PRINT N'ANALYSIS DATA mcrFormData'
+            -- PRINT @SQLStmt
+            EXEC sp_executesql @SQLStmt	
+        
+        SET @SQLStmt = 'SELECT TOP '+ CONVERT(VARCHAR, @Records) +' *
             FROM mcrFormData_Nmrc
             WHERE WKSHT_CD='''+ @Worksheet +'''
             AND RPT_REC_NUM=' + CONVERT(VARCHAR, @RecordNum) + '
             ORDER BY LINE_NUM, SUBLINE_NUM, CLMN_NUM, SUBCLMN_NUM;'
 
-            PRINT N'ANALYSIS DATA'
-            PRINT @SQLStmt
+            PRINT N'ANALYSIS DATA mcrFormData_Nmrc'
+            -- PRINT @SQLStmt
             EXEC sp_executesql @SQLStmt	
 
         SET @SQLStmt = 'SELECT TOP '+ CONVERT(VARCHAR, @Records) +' *
-            FROM MCR_NEW_NMRC
+            FROM mcrFormData_Alpha
             WHERE WKSHT_CD='''+ @Worksheet +'''
             AND RPT_REC_NUM=' + CONVERT(VARCHAR, @RecordNum) + '
-            ORDER BY LINE_NUM, CLMN_NUM;'
-                            
-            PRINT N'RAW DATA'
-            PRINT @SQLStmt
+            ORDER BY LINE_NUM, SUBLINE_NUM, CLMN_NUM, SUBCLMN_NUM;'
+
+            PRINT N'ANALYSIS DATA mcrFormData_Alpha'
+            -- PRINT @SQLStmt
             EXEC sp_executesql @SQLStmt	
+
+        -- SET @SQLStmt = 'SELECT TOP '+ CONVERT(VARCHAR, @Records) +' *
+        --     FROM MCR_NEW_NMRC
+        --     WHERE WKSHT_CD='''+ @Worksheet +'''
+        --     AND RPT_REC_NUM=' + CONVERT(VARCHAR, @RecordNum) + '
+        --     ORDER BY LINE_NUM, CLMN_NUM;'
+                            
+        --     PRINT N'RAW DATA'
+        --     PRINT @SQLStmt
+        --     EXEC sp_executesql @SQLStmt	
 
             PRINT N'*** FINISHED'
     END
