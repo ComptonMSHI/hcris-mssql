@@ -54,32 +54,29 @@ IF @ProductionMode = 1
         /************************************************************
             CONSTRUCTION
         ************************************************************/
+            DROP TABLE IF EXISTS [MCR_NEW_NMRC]
 
-        DROP TABLE IF EXISTS #TempNMRC
+            CREATE TABLE [MCR_NEW_NMRC] (
+                IMPORT_DT            DATETIME NULL,
+                IMPORT_SRC           VARCHAR(MAX),
+                FORM                 CHAR(10),
+                RPT_REC_NUM          FLOAT NOT NULL,
+                WKSHT_CD             CHAR(7) NOT NULL,
+                LINE_NUM             CHAR(5) NOT NULL,
+                CLMN_NUM             CHAR(5) NOT NULL,   
+                ITM_VAL_NUM          FLOAT NOT NULL
+            )
 
-        CREATE TABLE #TempNMRC (
-            RPT_REC_NUM          FLOAT NOT NULL,
-            WKSHT_CD             CHAR(7) NOT NULL,
-            LINE_NUM             CHAR(5) NOT NULL,
-            CLMN_NUM             CHAR(5) NOT NULL,   
-            ITM_VAL_NUM          FLOAT NOT NULL
-        )
+            DROP TABLE IF EXISTS #TempNMRC
 
-        IF @ProductionMode = 1
-            BEGIN
-                DROP TABLE IF EXISTS [MCR_NEW_NMRC]
+            CREATE TABLE #TempNMRC (
+                RPT_REC_NUM          FLOAT NOT NULL,
+                WKSHT_CD             CHAR(7) NOT NULL,
+                LINE_NUM             CHAR(5) NOT NULL,
+                CLMN_NUM             CHAR(5) NOT NULL,   
+                ITM_VAL_NUM          FLOAT NOT NULL
+            )
 
-                CREATE TABLE [MCR_NEW_NMRC] (
-                    IMPORT_DT            DATETIME NULL,
-                    IMPORT_SRC           VARCHAR(MAX),
-                    FORM                 CHAR(10),
-                    RPT_REC_NUM          FLOAT NOT NULL,
-                    WKSHT_CD             CHAR(7) NOT NULL,
-                    LINE_NUM             CHAR(5) NOT NULL,
-                    CLMN_NUM             CHAR(5) NOT NULL,   
-                    ITM_VAL_NUM          FLOAT NOT NULL
-                )
-            END
 
             /************************************************************
                 PREPARATION
@@ -96,16 +93,18 @@ IF @ProductionMode = 1
                         BEGIN
                             SET @CsvFile = N'hosp_'+ CAST(@CurrYear AS varchar(4)) + N'_NMRC.CSV'
                             SET @NmrcFile = @CsvPath + N'\' + @CsvFolder + N'\' + @CsvFile	
+                            SET @SQLStmt = N'BULK INSERT #tempNMRC FROM ''' + @NmrcFile + N''' WITH (FIRSTROW = 1, FIELDTERMINATOR = '','', ROWTERMINATOR = ''\n'')';
 
                             -- Pull into master with metadata.
-                            SET @SQLStmt = + 'TRUNCATE TABLE #TempNMRC;'
-                            + @SQLStmt + N'INSERT INTO [MCR_NEW_NMRC]
+                            SET @SQLStmt = @SQLStmt + N'INSERT INTO [MCR_NEW_NMRC]
                             (IMPORT_DT, IMPORT_SRC, FORM, ' + @NmrcFields + N')
                                     SELECT 
                                         ''' + @CsvFolder + ''' AS IMPORT_DT,
                                         ''' + @CsvFile + ''' AS IMPORT_SRC,
                                         ''2552-96'' AS FORM,
                                         ' + @NmrcFields + N' FROM #TempNMRC;'
+                            SET @SQLStmt = @SQLStmt + N'TRUNCATE TABLE #TempNMRC;'
+                            
                             PRINT N'Loading (96): '+ @CsvFile
                             EXEC sp_executesql @SQLStmt	
                         END
@@ -114,20 +113,23 @@ IF @ProductionMode = 1
                         BEGIN
                             SET @CsvFile    = N'hosp10_'+ CAST(@CurrYear AS varchar(4)) + N'_NMRC.CSV'  
                             SET @NmrcFile    = @CsvPath + N'\' + @CsvFolder + N'\' + @CsvFile		
+                            SET @SQLStmt = N'BULK INSERT #tempNMRC FROM ''' + @NmrcFile + N''' WITH (FIRSTROW = 1, FIELDTERMINATOR = '','', ROWTERMINATOR = ''\n'')';
 
                             -- Pull into master with metadata.
-                            SET @SQLStmt = + 'TRUNCATE TABLE #TempNMRC;'
-                            + @SQLStmt + N'INSERT INTO [MCR_NEW_NMRC]
+                            SET @SQLStmt = @SQLStmt + N'INSERT INTO [MCR_NEW_NMRC]
                                 (IMPORT_DT, IMPORT_SRC, FORM, ' + @NmrcFields10 + N')
                                     SELECT 
                                         ''' + @CsvFolder + ''' AS IMPORT_DT,
                                         ''' + @CsvFile + ''' AS IMPORT_SRC,
                                         ''2552-10'' AS FORM,
                                         ' + @NmrcFields10 + N' FROM #TempNMRC;'
+                            SET @SQLStmt = @SQLStmt + N'TRUNCATE TABLE #TempNMRC;'
+
                             PRINT N'Loading (10): '+ @CsvFile
                             EXEC sp_executesql @SQLStmt	                                        
                         END
 
+                    TRUNCATE TABLE #TempNMRC;
                     SET @CurrYear = @CurrYear + 1
                     SET @SQLStmt = N''
                     SET @CsvFile = N''
