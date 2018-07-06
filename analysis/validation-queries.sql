@@ -15,9 +15,9 @@ FROM dbo.mcrMeasures;
 
 SELECT TOP 10
 [RPT_REC_NUM], '(' as '(',
-    '(' as '(', [Cash1], '+' as '+', [Cash2], '+' as '+', [Cash3], '+' as '+', [Cash4], ')' as ')' , '+' as '+',
-    '(' as '(', [Marketable Securities1], '+' as '+', [Marketable Securities2], '+' as '+', [Marketable Securities3], '+' as '+', [Marketable Securities4], ')' as ')' , '+' as '+',
-    '(' as '(', [Unrestricted Investments1], '+' as '+', [Unrestricted Investments2], '+' as '+', [Unrestricted Investments3], '+' as '+', [Unrestricted Investments4], ')' as ')', 
+    [Cash1], '+' as '+', [Cash2], '+' as '+', [Cash3], '+' as '+', [Cash4], '+' as '+',
+    [Marketable Securities1], '+' as '+', [Marketable Securities2], '+' as '+', [Marketable Securities3], '+' as '+', [Marketable Securities4], '+' as '+',
+    [Unrestricted Investments1], '+' as '+', [Unrestricted Investments2], '+' as '+', [Unrestricted Investments3], '+' as '+', [Unrestricted Investments4],
     ')' as ')', '/' as '/','(' as '(',
     '(' as '(', [Total Expenses], '-' as '-', '(' as '(', [Depreciation1], '+' as '+', [Depreciation2], ')' as ')', ')' as ')', '/' as '/', [Days In Period], 
 ')' as ')', '=' as '=', [Days Cash on Hand]
