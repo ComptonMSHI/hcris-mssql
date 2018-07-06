@@ -53,7 +53,15 @@ IF @ProductionMode = 1
                 WHERE 
                 WKSHT_CD='S200001' 
                 AND SECTION_NAME = 'Hospital and Hospital-Based Component Identification'
-                AND (CLMN_DESC In ('Provider Type') OR LINE_DESC In ('Type of Control (see instructions)'))
+                AND CLMN_DESC In ('Provider Type')
+
+                UNION
+
+                SELECT PRVDR_NUM, CLMN_DESC as Id, CONVERT(varchar, ALPHA) as Val FROM mcrFormData 
+                WHERE 
+                WKSHT_CD='S200001' 
+                AND SECTION_NAME = 'Hospital and Hospital-Based Component Identification'
+                AND LINE_DESC Like ('Type of control%')
 
                 UNION
 
