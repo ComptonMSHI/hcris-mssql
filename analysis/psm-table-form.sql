@@ -129,6 +129,7 @@ IF @ProductionMode = 1
 
             , NULL as NMRC
             , NULL as NMRC_DESC
+            , NULL as COSTCODE
             , a.ALPHA as ALPHA
 
         
