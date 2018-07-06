@@ -16,6 +16,9 @@ print '*** INSTALL: Build Row Table'
 EXEC spLoadTableRows @ProductionMode = @INSTALL_PRODUCTION;
 
 print '*** INSTALL: Build Form Table'
+EXEC spLoadTableCoordinates @ProductionMode = @INSTALL_PRODUCTION;
+
+print '*** INSTALL: Build Form Table'
 EXEC spLoadTableForm @ProductionMode = @INSTALL_PRODUCTION;
 
 print '*** INSTALL: Build Provider Table'
