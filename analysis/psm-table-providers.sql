@@ -57,7 +57,7 @@ IF @ProductionMode = 1
 
                 UNION
 
-                SELECT PRVDR_NUM, CLMN_DESC as Id, CONVERT(varchar, ALPHA) as Val FROM mcrFormData 
+                SELECT PRVDR_NUM, 'Control Type' as Id, CONVERT(varchar, ALPHA) as Val FROM mcrFormData 
                 WHERE 
                 WKSHT_CD='S200001' 
                 AND SECTION_NAME = 'Hospital and Hospital-Based Component Identification'
