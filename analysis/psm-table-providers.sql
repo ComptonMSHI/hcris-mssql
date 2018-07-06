@@ -53,7 +53,7 @@ IF @ProductionMode = 1
                 WHERE 
                 WKSHT_CD='S200001' 
                 AND SECTION_NAME = 'Hospital and Hospital-Based Component Identification'
-                AND CLMN_DESC In ('Provider Type', 'Control Type')
+                AND (CLMN_DESC In ('Provider Type') OR LINE_DESC In ('Type of Control (see instructions)'))
 
                 UNION
 
