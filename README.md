@@ -26,4 +26,8 @@ There are shell scripts (`.sh`) available to perform three different stages of d
 
 There are no bat files yet to compliment the shell scripts for linux; however, the content of the `install_*.sql` files can be executed directly using SSMS or a similar tool for executing SQL.
 
+### Foundation
+
+Before running the foundation installation, edit the `foundation/foundation_install.sql' file to adjust the data path, output directory date, as well as the start and end years, as needed.
+
 ## References
