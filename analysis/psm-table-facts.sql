@@ -49,8 +49,10 @@ IF @ProductionMode = 1
                     , f.FY_END_DT
                     , f.RPT_REC_NUM
                     , DATEDIFF(d, f.FY_BGN_DT, f.FY_END_DT) as [Days In Period]
-                    , CASE WHEN f.NMRC Is Not Null OR f.NMRC != ''''
-                            THEN f.NMRC ELSE 0
+                    , CASE 
+                            WHEN f.NMRC Is Not Null OR f.NMRC != '''' THEN f.NMRC
+                            WHEN f.NMRC Is Null AND f.ALPHA Is Not Null THEN f.ALPHA
+                            ELSE Null
                         END AS [NMRC]            
                     , [Name] as [CalculationValue]
                     FROM mcrFormData f
