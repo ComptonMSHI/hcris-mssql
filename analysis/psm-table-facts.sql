@@ -73,7 +73,14 @@ IF @ProductionMode = 1
 
         --------------------------------   
         )
+';
 
+-- It would be a good idea to add an aggregation intersection table that works with
+-- mcrFormData and mcrCoordinate so that you could link a value to multiple coordinate names and sum them
+-- using the aggregate name.  It would allow calculation rules to be governed by data in tables.
+-- It would also make the query below MUCH more readable, and easier to maintain.
+-- e.g. 
+SET @SQLString = @SQLString + '
         SELECT 
 
         CASE WHEN [Total Revenues1] Is Not Null OR [Total Revenues2] Is Not Null THEN
