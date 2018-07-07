@@ -9,17 +9,17 @@
 #################################
 # Install:  See README.md for instructions.
 # Usage:
-    EXEC spBuildTableCoordinates
+    EXEC spLoadTableCoordinates
         @ProductionMode = 1
 */
 -- 0 = Test Mode 		- All actions simulated.  No permanent changes.
 -- 1 = Production Mode 	- All actions permanent.  Will drop and create tables.
 
-DROP PROCEDURE IF EXISTS spBuildTableCoordinates;
+DROP PROCEDURE IF EXISTS spLoadTableCoordinates;
 GO
 
 CREATE PROC
-    spBuildTableCoordinates
+    spLoadTableCoordinates
         @ProductionMode INTEGER = 0
     AS BEGIN
 
