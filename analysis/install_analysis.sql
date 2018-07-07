@@ -12,6 +12,9 @@
 
 DECLARE @INSTALL_PRODUCTION INT = 1
 
+print '*** INSTALL: Build Lookups'
+EXEC spBuildLookups @ProductionMode = 1
+
 print '*** INSTALL: Build Row Table'
 EXEC spLoadTableRows @ProductionMode = @INSTALL_PRODUCTION;
 

@@ -18,9 +18,6 @@ DECLARE @INSTALL_PRODUCTION INT = 1
 print '*** INSTALL: Build Crosswalk'
 EXEC spBuildCrosswalk @ProductionMode = @INSTALL_PRODUCTION;
 
-print '*** INSTALL: Build Lookups'
-EXEC spBuildLookups @ProductionMode = 1
-
 print '*** INSTALL: Load Worksheet Auto Table'
 EXEC spLoadWorksheetTemplates @ColumnCount = 15, @ProductionMode = @INSTALL_PRODUCTION;
 
