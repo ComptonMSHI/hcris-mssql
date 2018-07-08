@@ -1,0 +1,21 @@
+source:
+    download: true
+    directory: "Data"
+    fixedDate: ""
+    url: "https://www.cms.gov"
+    path: "/Research-Statistics-Data-and-Systems/Downloadable-Public-Use-Files/Cost-Reports/Cost-Reports-by-Fiscal-Year.html"
+    list: "Cost-Reports-by-Fiscal-Year-Items/HOSP"
+    tagAttr: "href"
+    tagMatch: "zip"
+store:
+    extract: true
+    directory: "Output"
+    prefix: ""
+    ext: ".zip"
+    file: "./mcr.sqlite"
+    maxqueue: 1000000
+settings:
+    debug: true
+    verbose: false
+    logfile: "log.html"
+    output: "file"
