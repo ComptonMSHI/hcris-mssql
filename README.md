@@ -24,10 +24,14 @@ There are shell scripts (`.sh`) available to perform three different stages of d
 
 ### Windows
 
-There are no bat files yet to compliment the shell scripts for linux; however, the content of the `install_*.sql` files can be executed directly using SSMS or a similar tool for executing SQL.
+- `install_foundation.bat` will drop and load a complete release of RPT, ALPHA and NMRC data from the hcris-archiver csv output.
+- `install_worksheets.bat` will drop and load all required worksheet and crosswalk data. Note that only a limited set of worksheets are supported, but you can expand on this by using the hcris-worksheets project, and adding to the crosswalk psm.
+- `install_analysis.bat` will drop and load the tables used for analysis, and as the final step before moving data into a multidimensional cube.
 
 ### Foundation
 
 Before running the foundation installation, edit the `foundation/foundation_install.sql' file to adjust the data path, output directory date, as well as the start and end years, as needed.
+
+A default build of the archiver is in the `data` directory.  This may not be the latest release.  Visit the hcris-archiver project for the latest build.
 
 ## References
