@@ -1,7 +1,7 @@
 @echo off
 
 REM # Leave the username blank and press enter for windows authentication.
-REM # ./install_analysis.bat localhost UABMSHIMCR
+REM # ./install_analysis.bat localhost TEST_MCR
 
 date /T
 time /T

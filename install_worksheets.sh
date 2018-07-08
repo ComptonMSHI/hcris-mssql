@@ -1,5 +1,5 @@
 # Assumes you pass in a password or env variable with the password as the third argument.
-# ./install_worksheets.sh "data.informatic.ist,37136" UABMSHIMCR $DB_PASS
+# ./install_worksheets.sh "localhost,1433" TEST_MCR $DB_PASS
 
 date
 
