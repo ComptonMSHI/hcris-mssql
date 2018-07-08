@@ -92,7 +92,7 @@ IF @ProductionMode = 1
                     IF @CurrYear <= 2011
                         BEGIN
                             SET @CsvFile = N'hosp_'+ CAST(@CurrYear AS varchar(4)) + N'_NMRC.CSV'
-                            SET @NmrcFile = @CsvPath + N'\' + @CsvFolder + N'\' + @CsvFile	
+                            SET @NmrcFile = @CsvPath + N'/' + @CsvFolder + N'/' + @CsvFile	
                             SET @SQLStmt = N'BULK INSERT #tempNMRC FROM ''' + @NmrcFile + N''' WITH (FIRSTROW = 1, FIELDTERMINATOR = '','', ROWTERMINATOR = ''\n'')';
 
                             -- Pull into master with metadata.
@@ -112,7 +112,7 @@ IF @ProductionMode = 1
                     IF @CurrYear >= 2010
                         BEGIN
                             SET @CsvFile    = N'hosp10_'+ CAST(@CurrYear AS varchar(4)) + N'_NMRC.CSV'  
-                            SET @NmrcFile    = @CsvPath + N'\' + @CsvFolder + N'\' + @CsvFile		
+                            SET @NmrcFile    = @CsvPath + N'/' + @CsvFolder + N'/' + @CsvFile		
                             SET @SQLStmt = N'BULK INSERT #tempNMRC FROM ''' + @NmrcFile + N''' WITH (FIRSTROW = 1, FIELDTERMINATOR = '','', ROWTERMINATOR = ''\n'')';
 
                             -- Pull into master with metadata.

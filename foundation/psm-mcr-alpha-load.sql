@@ -97,7 +97,7 @@ IF @ProductionMode = 1
                     IF @CurrYear <= 2011
                         BEGIN
                             SET @CsvFile = N'hosp_'+ CAST(@CurrYear AS varchar(4)) + N'_ALPHA.CSV'
-                            SET @AlphaFile = @CsvPath + N'\' + @CsvFolder + N'\' + @CsvFile
+                            SET @AlphaFile = @CsvPath + N'/' + @CsvFolder + N'/' + @CsvFile
 
                             -- Pull into temporary table.
                             SET @SQLStmt = N'BULK INSERT #tempALPHA FROM ''' + @AlphaFile + N''' WITH (FIRSTROW = 1, FIELDTERMINATOR = '','', ROWTERMINATOR = ''\n'')';
@@ -119,7 +119,7 @@ IF @ProductionMode = 1
                     IF @CurrYear >= 2010
                         BEGIN
                             SET @CsvFile    = N'hosp10_'+ CAST(@CurrYear AS varchar(4)) + N'_ALPHA.CSV'  
-                            SET @AlphaFile    = @CsvPath + N'\' + @CsvFolder + N'\' + @CsvFile
+                            SET @AlphaFile    = @CsvPath + N'/' + @CsvFolder + N'/' + @CsvFile
 
                             -- Pull into temporary table.
                             SET @SQLStmt        = N'BULK INSERT #tempALPHA FROM ''' + @AlphaFile + N''' WITH (FIRSTROW = 1, FIELDTERMINATOR = '','', ROWTERMINATOR = ''\n'')';
