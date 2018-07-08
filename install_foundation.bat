@@ -1,7 +1,10 @@
 @echo off
 
 REM # Leave the username blank and press enter for windows authentication.
-REM # ./install_analysis.bat localhost UABMSHIMCR &
+REM # ./install_analysis.bat localhost UABMSHIMCR
+
+date /T
+time /T
 
 set user=
 set /p user=User: 
@@ -21,3 +24,6 @@ IF "%user%"=="" (
     sqlcmd -S %1 -d %2 -U %user% -i foundation/install_foundation.sql -o install_foundation.log
 
 )
+
+date /T
+time /T
