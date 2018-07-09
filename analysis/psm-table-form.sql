@@ -41,7 +41,11 @@ IF @ProductionMode = 1
         SELECT DISTINCT
             yes.FORM
             , w.WKSHT
-            , w.WKSHT_CD
+            , CASE 
+                WHEN cw.WKSHT_CD Is Not Null 
+                    THEN cw.WKSHT_CD ELSE w.WKSHT_CD
+                END AS [WKSHT_CD]  
+
             
             , w.SHEET_NAME
             , w.SECTION_NAME
@@ -67,8 +71,10 @@ IF @ProductionMode = 1
                 WHEN cw.SUBCLMN_NUM Is Not Null 
                     THEN cw.SUBCLMN_NUM ELSE w.SUBCLMN_NUM
                 END AS [SUBCLMN_NUM]  
-        
+
             , w.CLMN_DESC
+
+            , cw.WKSHT_CD_96 as [WKSHT_CD_96] 
 
             , cw.LINE_NUM_96 as [LINE_NUM_96]
             , cw.SUBLINE_NUM_96 as [SUBLINE_NUM_96]
@@ -86,7 +92,7 @@ IF @ProductionMode = 1
                             AND w.WKSHT_CD = cw.WKSHT_CD_96
                             AND w.LINE_NUM = cw.LINE_NUM_96 
                             AND w.CLMN_NUM = cw.CLMN_NUM_96 
-            WHERE w.CLMN_NUM Is Not Null
+            WHERE w.CLMN_NUM Is Not Null;
 
             DROP INDEX IF EXISTS mcrForm_a ON mcrForm;
             CREATE INDEX mcrForm_a ON mcrForm (FORM ASC, WKSHT_CD ASC, LINE_NUM ASC, SUBLINE_NUM ASC, CLMN_NUM ASC, SUBCLMN_NUM ASC);
@@ -121,6 +127,8 @@ IF @ProductionMode = 1
             , f.SUBCLMN_NUM 
             , f.CLMN_DESC
 
+            , f.WKSHT_CD_96
+
             , f.LINE_NUM_96
             , f.SUBLINE_NUM_96
                     
@@ -142,7 +150,7 @@ IF @ProductionMode = 1
             LEFT JOIN mcrForm f ON
                 f.FORM = a.FORM
                 AND f.WKSHT_CD = a.WKSHT_CD
-                AND f.FORM =f.FORM
+                AND f.FORM = f.FORM
                 AND f.LINE_NUM = a.LINE_NUM
                 AND f.CLMN_NUM = a.CLMN_NUM
                 AND f.SUBLINE_NUM = a.SUBLINE_NUM
@@ -171,6 +179,8 @@ IF @ProductionMode = 1
             , f.CLMN_NUM
             , f.SUBCLMN_NUM 
             , f.CLMN_DESC
+
+            , f.WKSHT_CD_96
 
             , f.LINE_NUM_96
             , f.SUBLINE_NUM_96
