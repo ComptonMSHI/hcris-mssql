@@ -49,14 +49,6 @@ IF @ProductionMode = 1
 
                 UNION
 
-                SELECT PRVDR_NUM, CLMN_DESC as Id, CONVERT(varchar, NMRC) as Val FROM mcrFormData 
-                WHERE 
-                WKSHT_CD='S200001' 
-                AND SECTION_NAME = 'Hospital and Hospital-Based Component Identification'
-                AND CLMN_DESC In ('Provider Type')
-
-                UNION
-
                 SELECT PRVDR_NUM, 'Control Type' as Id, CONVERT(varchar, ALPHA) as Val FROM mcrFormData 
                 WHERE 
                 WKSHT_CD='S200001' 
@@ -77,7 +69,6 @@ IF @ProductionMode = 1
                     [Component Name]
                     , [CCN Number]
                     , [CBSA Number]
-                    , [Provider Type]
                     , [Control Type]
                     , [Date Certified]
                     , [Street]
@@ -95,7 +86,6 @@ IF @ProductionMode = 1
         , [Component Name] as [NAME]
         , [CCN Number] as [CCN]
         , [CBSA Number] as [CBSA]
-        , [Provider Type] as [PROVIDER_TYPE]
         , [Control Type] as [CONTROL_TYPE]
         , [Date Certified] as [CERTIFIED]
         , [Street] as [STREET]
