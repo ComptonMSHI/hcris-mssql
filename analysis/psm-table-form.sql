@@ -149,12 +149,17 @@ IF @ProductionMode = 1
 
             LEFT JOIN mcrForm f ON
                 f.FORM = a.FORM
-                AND f.WKSHT_CD = a.WKSHT_CD
-                AND f.FORM = f.FORM
-                AND f.LINE_NUM = a.LINE_NUM
-                AND f.CLMN_NUM = a.CLMN_NUM
-                AND f.SUBLINE_NUM = a.SUBLINE_NUM
-                AND f.SUBCLMN_NUM = a.SUBCLMN_NUM        
+                    AND 
+                    ((f.WKSHT_CD_96 = a.WKSHT_CD
+                    AND f.LINE_NUM_96 = a.LINE_NUM
+                    AND f.CLMN_NUM_96 = a.CLMN_NUM
+                    AND f.SUBLINE_NUM_96 = a.SUBLINE_NUM
+                    AND f.SUBCLMN_NUM_96 = a.SUBCLMN_NUM) OR
+                    (f.WKSHT_CD = a.WKSHT_CD
+                    AND f.LINE_NUM = a.LINE_NUM
+                    AND f.CLMN_NUM = a.CLMN_NUM
+                    AND f.SUBLINE_NUM = a.SUBLINE_NUM
+                    AND f.SUBCLMN_NUM = a.SUBCLMN_NUM))         
 
         UNION
 
@@ -206,12 +211,18 @@ IF @ProductionMode = 1
                             AND na.LINE_NUM = n.LINE_NUM            
 
                 INNER JOIN mcrForm f ON
-                    f.FORM = n.FORM
-                    AND f.WKSHT_CD = n.WKSHT_CD
+                f.FORM = n.FORM
+                    AND 
+                    ((f.WKSHT_CD_96 = n.WKSHT_CD
+                    AND f.LINE_NUM_96 = n.LINE_NUM
+                    AND f.CLMN_NUM_96 = n.CLMN_NUM
+                    AND f.SUBLINE_NUM_96 = n.SUBLINE_NUM
+                    AND f.SUBCLMN_NUM_96 = n.SUBCLMN_NUM) OR
+                    (f.WKSHT_CD = n.WKSHT_CD
                     AND f.LINE_NUM = n.LINE_NUM
                     AND f.CLMN_NUM = n.CLMN_NUM
                     AND f.SUBLINE_NUM = n.SUBLINE_NUM
-                    AND f.SUBCLMN_NUM = n.SUBCLMN_NUM       
+                    AND f.SUBCLMN_NUM = n.SUBCLMN_NUM))        
             ) 
             SELECT *
             INTO mcrFormData
