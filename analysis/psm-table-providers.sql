@@ -41,28 +41,20 @@ IF @ProductionMode = 1
         WITH PROVIDERS AS (
             SELECT * FROM (
 
-                SELECT PRVDR_NUM, CLMN_DESC as Id, ALPHA as Val FROM mcrFormData 
-                WHERE 
-                WKSHT_CD='S200001' 
-                AND SECTION_NAME = 'Hospital and Hospital-Based Component Identification'
-                AND LINE_DESC = 'Hospital'
-                AND CLMN_DESC In ('Component Name', 'CCN Number', 'CBSA Number', 'Date Certified')
+                SELECT DISTINCT PRVDR_NUM, CLMN_DESC as Id, ALPHA as Val FROM dbo.mcrFormData 
+                WHERE FORM='2552-10' AND WKSHT_CD='S200001' AND LINE_DESC = 'Hospital' 
+                    AND LINE_NUM = '003' AND ALPHA Is Not Null
 
                 UNION
 
-                SELECT PRVDR_NUM, 'Control Type' as Id, CONVERT(varchar, ALPHA) as Val FROM mcrFormData 
-                WHERE 
-                WKSHT_CD='S200001' 
-                AND SECTION_NAME = 'Hospital and Hospital-Based Component Identification'
-                AND LINE_DESC Like ('Type of control%')
+                SELECT DISTINCT PRVDR_NUM, 'Control Type' as Id, CONVERT(varchar, ALPHA) as Val FROM mcrFormData 
+                WHERE FORM='2552-10' AND WKSHT_CD='S200001' AND LINE_NUM = '021' 
+                    AND CLMN_NUM='001' AND ALPHA Is Not Null
 
                 UNION
 
-                SELECT PRVDR_NUM, CLMN_DESC as Id, ALPHA as Val FROM mcrFormData 
-                WHERE 
-                WKSHT_CD='S200001'
-                AND SECTION_NAME = 'Hospital and Hospital Health Care Complex Address'
-                AND CLMN_DESC In ('Street', 'P.O. Box', 'City', 'State', 'Zip Code', 'County')
+                SELECT DISTINCT PRVDR_NUM, CLMN_DESC as Id, ALPHA as Val FROM mcrFormData 
+                WHERE FORM='2552-10' AND WKSHT_CD='S200001' AND LINE_NUM IN ('001','002')
 
             ) BaseData
             PIVOT (
