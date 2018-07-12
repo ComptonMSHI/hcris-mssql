@@ -45,6 +45,7 @@ IF @ProductionMode = 1
                 WHERE 
                 WKSHT_CD='S200001' 
                 AND SECTION_NAME = 'Hospital and Hospital-Based Component Identification'
+                AND LINE_DESC = 'Hospital'
                 AND CLMN_DESC In ('Component Name', 'CCN Number', 'CBSA Number', 'Date Certified')
 
                 UNION
