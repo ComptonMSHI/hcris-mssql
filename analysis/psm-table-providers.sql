@@ -41,14 +41,31 @@ IF @ProductionMode = 1
         WITH PROVIDERS AS (
             SELECT * FROM (
 
-                SELECT DISTINCT PRVDR_NUM, CLMN_DESC as Id, ALPHA as Val, LINE_NUM, SUBLINE_NUM FROM dbo.mcrFormData 
-                  WHERE WKSHT_CD='S200001'
+                SELECT DISTINCT
+
+                    fd.PRVDR_NUM 
+                    , LAST_VALUE(fd.CLMN_DESC) 
+                        OVER (
+                            PARTITION BY fd.PRVDR_NUM,[LINE_NUM],[SUBLINE_NUM],[CLMN_NUM],[SUBCLMN_NUM]
+                            ORDER BY fd.FY_BGN_DT
+                            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+                        ) as [Id]
+                    , LAST_VALUE(fd.ALPHA) 
+                        OVER (
+                            PARTITION BY fd.PRVDR_NUM,[LINE_NUM],[SUBLINE_NUM],[CLMN_NUM],[SUBCLMN_NUM]
+                            ORDER BY fd.FY_BGN_DT 
+                            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+                        ) as [Val]
+                    
+                FROM mcrFormData fd
+                        
+                WHERE fd.WKSHT_CD='S200001'
                     AND (
-                    	(LINE_NUM = '001' AND CLMN_NUM In ('001', '002')) OR
-                    	(LINE_NUM = '002' AND CLMN_NUM In ('001', '002','003','004')) OR
-                    	(LINE_NUM = '003' AND CLMN_NUM In ('001', '002','003','005')) OR
-                    	(LINE_NUM = '021' AND CLMN_NUM = '001')
+                        (fd.LINE_NUM = '001' AND fd.CLMN_NUM In ('001', '002')) OR
+                        (fd.LINE_NUM = '002' AND fd.CLMN_NUM In ('001', '002','003','004')) OR
+                        (fd.LINE_NUM = '003' AND fd.CLMN_NUM In ('001', '002','003','005'))
                     )
+                    
 
             ) BaseData
             PIVOT (
@@ -56,7 +73,6 @@ IF @ProductionMode = 1
                     [Component Name]
                     , [CCN Number]
                     , [CBSA Number]
-                    , [Control Type]
                     , [Date Certified]
                     , [Street]
                     , [P.O. Box]
@@ -66,10 +82,10 @@ IF @ProductionMode = 1
                     , [Zip Code]
                 )
             ) AS PivotData
-            -- ORDER BY PRVDR_NUM
+            
         )
         SELECT DISTINCT 
-        [PRVDR_NUM]
+        p.[PRVDR_NUM]
         , [Component Name] as [NAME]
         , [CCN Number] as [CCN]
         , [CBSA Number] as [CBSA]
@@ -82,7 +98,20 @@ IF @ProductionMode = 1
         , [County] as [COUNTY]
         , [Zip Code] as [ZIP]
         INTO mcrProviders
-            FROM PROVIDERS;
+            FROM PROVIDERS p
+            JOIN (
+                
+                SELECT DISTINCT 
+                PRVDR_NUM
+                , LAST_VALUE(PRVDR_CTRL_TYPE_CD) 
+                        OVER (
+                            PARTITION BY PRVDR_NUM
+                            ORDER BY FY_BGN_DT
+                            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+                        ) as [Control Type]
+                FROM MCR_NEW_RPT
+            
+            ) as ct ON p.PRVDR_NUM = ct.PRVDR_NUM
 
 
         DROP INDEX IF EXISTS mcrProviders_a ON MCR_WORKSHEETS;
@@ -94,6 +123,11 @@ IF @ProductionMode = 1
 
         UPDATE mcrProviders SET [ZIP] = SUBSTRING([ZIP], 1, 5)
 
+        UPDATE mcrProviders SET [STATE] = 'CT' WHERE STATE = 'CONNECTICUT';
+        UPDATE mcrProviders SET [STATE] = 'GA' WHERE STATE = 'GEORGIA';
+        UPDATE mcrProviders SET [STATE] = 'MI' WHERE STATE = 'MICHIGAN';
+        UPDATE mcrProviders SET [STATE] = 'NY' WHERE STATE = 'NEW YORK';
+        UPDATE mcrProviders SET [STATE] = 'TX' WHERE STATE = 'TEXAS';
 
             -- END PRODUCTION MODE
             END
