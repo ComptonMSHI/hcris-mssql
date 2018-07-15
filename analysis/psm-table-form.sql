@@ -90,8 +90,10 @@ IF @ProductionMode = 1
                         LEFT JOIN MCR_CROSSWALK cw ON
                             w.FORM_NUM = cw.FORM_NUM_96
                             AND w.WKSHT_CD = cw.WKSHT_CD_96
-                            AND w.LINE_NUM = cw.LINE_NUM_96 
+                            AND w.LINE_NUM = cw.LINE_NUM_96
+                            AND w.SUBLINE_NUM = cw.SUBLINE_NUM_96  
                             AND w.CLMN_NUM = cw.CLMN_NUM_96 
+                            AND w.SUBCLMN_NUM = cw.SUBCLMN_NUM_96
             WHERE w.CLMN_NUM Is Not Null AND w.CLMN_NUM != '000';
 
             DROP INDEX IF EXISTS mcrForm_a ON mcrForm;

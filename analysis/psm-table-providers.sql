@@ -41,20 +41,14 @@ IF @ProductionMode = 1
         WITH PROVIDERS AS (
             SELECT * FROM (
 
-                SELECT DISTINCT PRVDR_NUM, CLMN_DESC as Id, ALPHA as Val FROM dbo.mcrFormData 
-                WHERE FORM='2552-10' AND WKSHT_CD='S200001' AND LINE_DESC = 'Hospital' 
-                    AND LINE_NUM = '003' AND ALPHA Is Not Null
-
-                UNION
-
-                SELECT DISTINCT PRVDR_NUM, 'Control Type' as Id, CONVERT(varchar, ALPHA) as Val FROM mcrFormData 
-                WHERE FORM='2552-10' AND WKSHT_CD='S200001' AND LINE_NUM = '021' 
-                    AND CLMN_NUM='001' AND ALPHA Is Not Null
-
-                UNION
-
-                SELECT DISTINCT PRVDR_NUM, CLMN_DESC as Id, ALPHA as Val FROM mcrFormData 
-                WHERE FORM='2552-10' AND WKSHT_CD='S200001' AND LINE_NUM IN ('001','002')
+                SELECT DISTINCT PRVDR_NUM, CLMN_DESC as Id, ALPHA as Val, LINE_NUM, SUBLINE_NUM FROM dbo.mcrFormData 
+                  WHERE WKSHT_CD='S200001'
+                    AND (
+                    	(LINE_NUM = '001' AND CLMN_NUM In ('001', '002')) OR
+                    	(LINE_NUM = '002' AND CLMN_NUM In ('001', '002','003','004')) OR
+                    	(LINE_NUM = '003' AND CLMN_NUM In ('001', '002','003','005')) OR
+                    	(LINE_NUM = '021' AND CLMN_NUM = '001')
+                    )
 
             ) BaseData
             PIVOT (
