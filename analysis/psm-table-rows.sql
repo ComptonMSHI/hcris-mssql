@@ -103,7 +103,7 @@ IF @ProductionMode = 1
             , ITM_VAL_NUM as NMRC
 
             INTO mcrFormData_Nmrc
-            FROM MCR_NEW_NMRC
+            FROM MCR_NEW_NMRC;
 
             DROP INDEX IF EXISTS mcrFormData_Nmrc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Nmrc;
             CREATE INDEX mcrFormData_Nmrc_FORM_WKSHTCD_FORM_IMPORTDT_RPTRECNUM_LINENUM_CLMN_NUM ON mcrFormData_Nmrc (FORM ASC, WKSHT_CD ASC, LINE_NUM ASC, SUBLINE_NUM ASC, CLMN_NUM ASC, SUBCLMN_NUM ASC);          
